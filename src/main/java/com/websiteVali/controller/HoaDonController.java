@@ -82,7 +82,6 @@ public class HoaDonController {
 		}
 
 		NguoiDungDTO user = nguoiDungService.getByEmail(email);
-
 		HoaDonDTO hoaDonDTO = (HoaDonDTO) httpSession.getAttribute("hoaDonDTO");
 		if (hoaDonDTO == null) {
 			hoaDonDTO = new HoaDonDTO();
@@ -91,11 +90,10 @@ public class HoaDonController {
 		String message = "";
 
 		List<ChiTietHoaDonDTO> chiTietHoaDonDTOs = hoaDonDTO.getChiTietHoaDonDTOs();
-		
-		if(chiTietHoaDonDTOs.size() == 0) {
+		if (chiTietHoaDonDTOs.size() == 0) {
 			return "redirect:/gio-hang";
 		}
-		
+
 		for (ChiTietHoaDonDTO cthd : chiTietHoaDonDTOs) {
 			MauSanPhamDTO mauSanPhamDTO = cthd.getMauSanPhamDTO();
 			MauSanPham temp = mauSanPhamService.getMauSanPhamTheoMaSanPhamVaMaMau(mauSanPhamDTO.getMaSanPham(),
@@ -122,22 +120,25 @@ public class HoaDonController {
 
 		HoaDon hoaDon = hoaDonConverter.toHoaDon(hoaDonDTO);
 		String id = hoaDonService.themHoaDon(hoaDon).getId();
+try {
+	chiTietHoaDonDTOs.forEach(cthd -> {
+		cthd.setMaHoaDon(id);
+		ChiTietHoaDon chiTietHoaDon = chiTietHoaDonConverter.toChiTietHoaDon(cthd);
+		chiTietHoaDonService.themChiTietHoaDon(chiTietHoaDon);
+		
+		MauSanPham mauSanPham = chiTietHoaDon.getMauSanPham();
+		int slt = mauSanPham.getSoLuong();
+		mauSanPham.setSoLuong(slt - chiTietHoaDon.getSoLuong());
+		mauSanPhamService.capNhatMauSanPham(mauSanPham);
+	});
 
-		chiTietHoaDonDTOs.forEach(cthd -> {
-			cthd.setMaHoaDon(id);
-			ChiTietHoaDon chiTietHoaDon = chiTietHoaDonConverter.toChiTietHoaDon(cthd);
-			chiTietHoaDonService.themChiTietHoaDon(chiTietHoaDon);
-			MauSanPham mauSanPham = chiTietHoaDon.getMauSanPham();
-
-			int slt = mauSanPham.getSoLuong();
-
-			mauSanPham.setSoLuong(slt - chiTietHoaDon.getSoLuong());
-			mauSanPhamService.capNhatMauSanPham(mauSanPham);
-		});
-
-		hoaDonDTO = new HoaDonDTO();
-		httpSession.setAttribute("hoaDonDTO", hoaDonDTO);
-
+	hoaDonDTO = new HoaDonDTO();
+	httpSession.setAttribute("hoaDonDTO", hoaDonDTO);
+	System.out.println("OK");
+} catch (Exception e) {
+	return "redirect:/trang-chu";
+}
+	
 		return "redirect:/quan-ly-don-hang/chi-tiet-don-hang?id=" + id;
 	}
 

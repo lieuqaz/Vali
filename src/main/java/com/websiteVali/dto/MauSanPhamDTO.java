@@ -92,7 +92,7 @@ public class MauSanPhamDTO {
 	@Override
 	public String toString() {
 		return "MauSanPhamDTO [maMau=" + maMau + ", tenMau=" + tenMau + ", maSanPham=" + maSanPham + ", tenSanPham="
-				+ tenSanPham + ", soLuong=" + soLuong + ", hinhAnhBase64=" + hinhAnhBase64 + "]";
+				+ tenSanPham + ", soLuong=" + soLuong ;
 	}
 	
 }

@@ -35,7 +35,7 @@ public class ChiTietHoaDonDTO {
 	
 	@Override
 	public String toString() {
-		return "ChiTietHoaDonDTO [maHoaDon=" + maHoaDon + ", mauSanPhamDTO=" + mauSanPhamDTO + ", soLuong=" + soLuong
+		return "ChiTietHoaDonDTO [maHoaDon=" + maHoaDon + ", mauSanPhamDTO=" + mauSanPhamDTO.getMaSanPham() + ", soLuong=" + soLuong
 				+ ", giaBan=" + giaBan + "]";
 	}
 

@@ -125,7 +125,7 @@
 				<form method="get"
 					action="<c:url value="/quan-ly-don-hang/dat-hang"/>">
 					<button type="submit" class="btn btn-danger" id="btnDatHang">Tiến
-						hàng đặt hàng</button>
+						hành đặt hàng</button>
 				</form>
 			</div>
 

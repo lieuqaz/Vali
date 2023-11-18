@@ -23,20 +23,32 @@ public class ChiTietHoaDonConverter {
 
 	public ChiTietHoaDon toChiTietHoaDon(ChiTietHoaDonDTO chiTietHoaDonDTO) {
 
-		if (chiTietHoaDonDTO == null)
+		if (chiTietHoaDonDTO == null) {
 			return null;
+		}
+		try {
+			String maSanPham = chiTietHoaDonDTO.getMauSanPhamDTO().getMaSanPham();
+			System.out.println("maSanPham: " + maSanPham);
+			int maMau = chiTietHoaDonDTO.getMauSanPhamDTO().getMaMau();
+			System.out.println("maMau: " + maMau);
+			String maHoaDon = chiTietHoaDonDTO.getMaHoaDon();
+			System.out.println("maHoaDon: " + maHoaDon);
+			int soLuong = chiTietHoaDonDTO.getSoLuong();
+			System.out.println("soLuong: " + soLuong);
+			HoaDon hoaDon = hoaDonService.getHoaDonTheoId(maHoaDon);
+			System.out.println("hoaDon: " + hoaDon);
+			MauSanPham mauSanPham = mauSanPhamService.getMauSanPhamTheoMaSanPhamVaMaMau(maSanPham, maMau);
+			System.out.println("mauSanPham: " + mauSanPham);
+		
 
-		String maSanPham = chiTietHoaDonDTO.getMauSanPhamDTO().getMaSanPham();
-		int maMau = chiTietHoaDonDTO.getMauSanPhamDTO().getMaMau();
-		MauSanPham mauSanPham = mauSanPhamService.getMauSanPhamTheoMaSanPhamVaMaMau(maSanPham, maMau);
+			ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon(mauSanPham, hoaDon, soLuong);
 
-		String maHoaDon = chiTietHoaDonDTO.getMaHoaDon();
-		HoaDon hoaDon = hoaDonService.getHoaDonTheoId(maHoaDon);
+			return chiTietHoaDon;
+		} catch (Exception e) {
+			System.out.println("erorr: " + e);
+			return null;
+		}
 
-		int soLuong = chiTietHoaDonDTO.getSoLuong();
-
-		ChiTietHoaDon chiTietHoaDon = new ChiTietHoaDon(mauSanPham, hoaDon, soLuong);
-		return chiTietHoaDon;
 	}
 
 	public ChiTietHoaDonDTO toChiTietHoaDonDTO(ChiTietHoaDon chiTietHoaDon) {
@@ -50,11 +62,9 @@ public class ChiTietHoaDonConverter {
 
 		int soLuong = chiTietHoaDon.getSoLuong();
 		double giaBan = chiTietHoaDon.getMauSanPham().getSanPham().getGiaBan();
-		
-//		ChiTietHoaDonDTO chiTietHoaDonDTO = new ChiTietHoaDonDTO(maHoaDon, mauSanPhamDTO, soLuong);
 		ChiTietHoaDonDTO chiTietHoaDonDTO = new ChiTietHoaDonDTO(maHoaDon, mauSanPhamDTO, soLuong, giaBan);
 
 		return chiTietHoaDonDTO;
 	}
-	
+
 }

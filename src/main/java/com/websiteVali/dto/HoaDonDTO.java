@@ -77,7 +77,8 @@ public class HoaDonDTO {
 	public boolean xoaChiTietHoaDon(MauSanPhamDTO mauSanPhamDTO) {
 		int index = -1;
 		for (ChiTietHoaDonDTO chiTietHoaDonDTO : chiTietHoaDonDTOs) {
-			if (chiTietHoaDonDTO.getMauSanPhamDTO().equals(mauSanPhamDTO)) {
+			if ((chiTietHoaDonDTO.getMauSanPhamDTO().getMaSanPham().equals(mauSanPhamDTO.getMaSanPham()))
+					&& (chiTietHoaDonDTO.getMauSanPhamDTO().getMaMau()==mauSanPhamDTO.getMaMau())) {
 				index = chiTietHoaDonDTOs.indexOf(chiTietHoaDonDTO);
 				break;
 			}

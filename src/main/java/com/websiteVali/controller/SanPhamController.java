@@ -207,7 +207,6 @@ public class SanPhamController {
 
 	@GetMapping("/san-pham")
 	public String chiTietSanPham(Model model, @RequestParam("id") String id) {
-System.out.println("san-pham");
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String email;
 		if (principal instanceof CustomUserDetails) {

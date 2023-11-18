@@ -11,198 +11,193 @@ const idSanPham = $(".maSanPham");
 const idMau = $(".maMau");
 const deleteSP = $(".delete--sp");
 
-console.log(checkBox)
-
-
-
-
-
 calculateTotalPrice = () => {
-    var price = 0;
-    
-    count.each(function (index) {
-//        if (checkBox.get(index).checked === true) {
-            console.log($(this).val());
-            let amountTemp = Number.parseInt($(this).val());
-            console.log("amountTemp "+amountTemp)
-            let priceTemp = Number.parseInt(priceProduct.get(index).textContent.replaceAll(",", ""));
-            console.log("priceTemp "+priceTemp)
-            let totalPriceTemp = amountTemp * priceTemp;
-            price += totalPriceTemp;
-//        }
-    })
+	var price = 0;
+	
+	count.each(function(index) {
+		console.log("priceProduct.get(index) " + priceProduct.get(index).textContent);
+		//        if (checkBox.get(index).checked === true) {
+		let amountTemp = Number.parseInt($(this).val());
+		console.log("amountTemp " + amountTemp)
+		let priceTemp = Number.parseInt(priceProduct.get(index).textContent.replaceAll(".", ""));
+		console.log("priceTemp " + priceTemp)
+		let totalPriceTemp = amountTemp * priceTemp;
+		price += totalPriceTemp;
+		//        }
+	})
 
-    totalPrice.html(price.toLocaleString(
-    		  undefined, // leave undefined to use the visitor's browser 
-              // locale or a string like 'en-US' to override it.
-   { minimumFractionDigits: 0 }
- ));
+	totalPrice.html(price.toLocaleString(
+		undefined, // leave undefined to use the visitor's browser 
+		// locale or a string like 'en-US' to override it.
+		{ minimumFractionDigits: 0 }
+	));
 }
 
 
-checkBox.each(function (index) {
-    $(this).change(function () {
-        calculateTotalPrice();
-    })
+checkBox.each(function(index) {
+	$(this).change(function() {
+		calculateTotalPrice();
+	})
 })
 
 
 
-$(document).ready(function () {
-    calculateTotalPrice();
+$(document).ready(function() {
+	calculateTotalPrice();
 });
 
 
-add.each(function (index) {
+add.each(function(index) {
 
-    $(this).click(function () {
-    	
-    	let msp = idSanPham.get(index).value;
-    	let mm = Number.parseInt(idMau.get(index).value);
-    	
-    	let apiFetch = "http://localhost:8081/websiteVali/api/gio-hang/kiem-tra-so-luong-ton?maSanPham=" + msp + "&maMau=" + mm;
-    	console.log(apiFetch);
-    	
-    	$.get(apiFetch, function (data, status) {
-    			if (status === 'success') {
-    				console.log(data);
-    				maxCount.get(index).value = data;
-    			}
-    	});
-    	
-    	
-        let currentVal = Number.parseInt(count.get(index).value);
-        const max = Number.parseInt(maxCount.get(index).value);
-        if (currentVal < max) {
+	$(this).click(function() {
 
-            count.get(index).value = currentVal + 1;
-            capNhatSoLuongChiTietHoaDon(msp, mm, currentVal + 1);
-
-        } else {
-            alert.show();
-            clearAlert();
-        }
-
-//        if (checkBox.get(index).checked === true) {
-
-            calculateTotalPrice();
-//        }
-    });
-});
-
-minus.each(function (index) {
-
-    $(this).click(function () {
-    	let msp = idSanPham.get(index).value;
-    	let mm = Number.parseInt(idMau.get(index).value);
-        let currentVal = Number.parseInt(count.get(index).value);
-        const min = 1;
-        if (currentVal > min) {
-            count.get(index).value = currentVal - 1;
-            capNhatSoLuongChiTietHoaDon(msp, mm, currentVal - 1);
-            alert_block.css({ "display": "none" });
-
-        }
-//        if (checkBox.get(index).checked === true) {
-
-            calculateTotalPrice();
-//        }
-
-    });
-});
-deleteSP.each(function (index) {
-	
-	$(this).click(function () {
-		
 		let msp = idSanPham.get(index).value;
-    	let mm = Number.parseInt(idMau.get(index).value);
+		let mm = Number.parseInt(idMau.get(index).value);
+
+		let apiFetch = "http://localhost:8081/websiteVali/api/gio-hang/kiem-tra-so-luong-ton?maSanPham=" + msp + "&maMau=" + mm;
+		console.log(apiFetch);
+
+		$.get(apiFetch, function(data, status) {
+			if (status === 'success') {
+				console.log(data);
+				maxCount.get(index).value = data;
+			}
+		});
+
+
+		let currentVal = Number.parseInt(count.get(index).value);
+		const max = Number.parseInt(maxCount.get(index).value);
+		if (currentVal < max) {
+
+			count.get(index).value = currentVal + 1;
+			capNhatSoLuongChiTietHoaDon(msp, mm, currentVal + 1);
+
+		} else {
+			alert.show();
+			clearAlert();
+		}
+
+		//        if (checkBox.get(index).checked === true) {
+
+		calculateTotalPrice();
+		//        }
+	});
+});
+
+minus.each(function(index) {
+
+	$(this).click(function() {
+		let msp = idSanPham.get(index).value;
+		let mm = Number.parseInt(idMau.get(index).value);
+		let currentVal = Number.parseInt(count.get(index).value);
+		if (currentVal > 1) {
+			count.get(index).value = currentVal - 1;
+			capNhatSoLuongChiTietHoaDon(msp, mm, currentVal - 1);
+			alert_block.css({ "display": "none" });
+
+		}
+		calculateTotalPrice();
+
+
+	});
+});
+deleteSP.each(function(index) {
+
+	$(this).click(function() {
+
+		let msp = idSanPham.get(index).value;
+		let mm = Number.parseInt(idMau.get(index).value);
 		xoaChiTietHoaDon(msp, mm);
 		calculateTotalPrice();
 
-		
+
 	});
 });
 
 
-count.each(function (index) {
-    $(this).blur(function () {
-        let valueTemp = Number.parseInt($(this).val());
-        console.log(isNaN(NaN));
-        // nếu là số thì flase
-        // là chuỗi thì true;
-        // là nan thì true
+count.each(function(index) {
+	$(this).blur(function() {
+		let valueTemp = Number.parseInt($(this).val());
+		// nếu là số thì flase
+		// là chuỗi thì true;
+		// là nan thì true
 
-        // console.log(isNaN()  === valueTemp);
+		// console.log(isNaN()  === valueTemp);
 
-        if (isNaN(valueTemp)) {
+		if (isNaN(valueTemp)) {
 
-            // trường hợp này đúng
-            $(this).val(1);
-            let msp = idSanPham.get(index).value;
-        	let mm = Number.parseInt(idMau.get(index).value);
-            capNhatSoLuongChiTietHoaDon(msp, mm, 1);
-            alert.show();
-            clearAlert();
-        }
+			// trường hợp này đúng
+			$(this).val(1);
+			let msp = idSanPham.get(index).value;
+			let mm = Number.parseInt(idMau.get(index).value);
+			capNhatSoLuongChiTietHoaDon(msp, mm, 1);
+			alert.show();
+			clearAlert();
+		}
 
-        const max = Number.parseInt(maxCount.get(index).value);
-        // console.log(max);
-        if (valueTemp > 0 && valueTemp <= max) {
-        	let msp = idSanPham.get(index).value;
-        	let mm = Number.parseInt(idMau.get(index).value);
-            capNhatSoLuongChiTietHoaDon(msp, mm, valueTemp);
-            calculateTotalPrice();
-            alert_block.css({ "display": "none" });
-        } 
-        if(valueTemp > max){
-        	$(this).val(max);
-        	let msp = idSanPham.get(index).value;
-        	let mm = Number.parseInt(idMau.get(index).value);
-            capNhatSoLuongChiTietHoaDon(msp, mm, max);
-        	alert.show();
-            clearAlert();
-        }
-        else {
-        	$(this).val(1);
-        	let msp = idSanPham.get(index).value;
-        	let mm = Number.parseInt(idMau.get(index).value);
-            capNhatSoLuongChiTietHoaDon(msp, mm, 1);
-            alert.show();
-            clearAlert()
-        }
+		const max = Number.parseInt(maxCount.get(index).value);
+		// console.log(max);
+		if (valueTemp > 0 && valueTemp <= max) {
+			let msp = idSanPham.get(index).value;
+			let mm = Number.parseInt(idMau.get(index).value);
+			capNhatSoLuongChiTietHoaDon(msp, mm, valueTemp);
+			calculateTotalPrice();
+			alert_block.css({ "display": "none" });
+		}
+		if (valueTemp > max) {
+			$(this).val(max);
+			let msp = idSanPham.get(index).value;
+			let mm = Number.parseInt(idMau.get(index).value);
+			capNhatSoLuongChiTietHoaDon(msp, mm, max);
+			alert.show();
+			clearAlert();
+		}
+		else {
+			$(this).val(1);
+			let msp = idSanPham.get(index).value;
+			let mm = Number.parseInt(idMau.get(index).value);
+			capNhatSoLuongChiTietHoaDon(msp, mm, 1);
+			alert.show();
+			clearAlert()
+		}
 
-    })
+	})
 })
 
 
 function clearAlert() {
-    setTimeout(function () {
-        alert_block.css({ "display": "none" });
+	setTimeout(function() {
+		alert_block.css({ "display": "none" });
 
-    }, 3000)
+	}, 3000)
 
 }
-xoaChiTietHoaDon = (maSanPham, maMau) =>{
-	
+xoaChiTietHoaDon = (maSanPham, maMau) => {
+
 	$.ajax({
-	    url: apiFetch = "http://localhost:8081/websiteVali/api/gio-hang/xoa-gio-hang?maSanPham=" + maSanPham + "&maMau=" + maMau,
-	    type: 'DELETE',
-	    success: function(result) {
-	    	
-	    	window.location.href = "http://localhost:8081/websiteVali/gio-hang";
-	    	toastr.success("Đã xóa khỏi giỏ hàng");
-	    },
-	    error: function() {
+		url: apiFetch = "http://localhost:8081/websiteVali/api/gio-hang/xoa-gio-hang?maSanPham=" + maSanPham + "&maMau=" + maMau,
+		type: 'DELETE',
+		success: function(result) {
+
+			window.location.href = "http://localhost:8081/websiteVali/gio-hang";
+			toastr.success("Đã xóa khỏi giỏ hàng");
+		},
+		error: function() {
 			toastr.error('Không xóa được')
 		},
 	});
 }
 
-capNhatSoLuongChiTietHoaDon = (maSanPham, maMau, soLuong) =>{
-	
+capNhatSoLuongChiTietHoaDon = (maSanPham, maMau, soLuong) => {
+	console.log("http://localhost:8081/websiteVali/api/gio-hang/cap-nhat-so-luong?maSanPham=" + maSanPham + "&maMau=" + maMau + "&soLuong=" + soLuong);
 	$.ajax({
 		url: "http://localhost:8081/websiteVali/api/gio-hang/cap-nhat-so-luong?maSanPham=" + maSanPham + "&maMau=" + maMau + "&soLuong=" + soLuong,
-		type: 'GET',
+		type: 'GET', success: function(result) {
+			console.log("Đã thêm");
+		},
+		error: function() {
+			console.log("Lỗi thêm");
+		},
 	});
 }
 

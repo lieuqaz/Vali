@@ -37,7 +37,6 @@ public class GioHangRestController {
 	@GetMapping("/them-vao-gio-hang")
 	public int themVaoGioHang(HttpSession httpSession, @RequestParam("maSanPham") String maSanPham,
 			@RequestParam("maMau") int maMau) {
-System.out.println("them-vao-gio-hang");
 		HoaDonDTO hoaDonDTO = (HoaDonDTO) httpSession.getAttribute("hoaDonDTO");
 		if (hoaDonDTO == null) {
 			hoaDonDTO = new HoaDonDTO();
@@ -60,11 +59,12 @@ System.out.println("them-vao-gio-hang");
 		}
 		MauSanPham mauSanPham = mauSanPhamService.getMauSanPhamTheoMaSanPhamVaMaMau(maSanPham, maMau);
 		MauSanPhamDTO mauSanPhamDTO = mauSanPhamConverter.toMauSanPhamDTO(mauSanPham);
-
 		hoaDonDTO.getChiTietHoaDonDTOs().forEach(cthd -> {
-			if (cthd.getMauSanPhamDTO().equals(mauSanPhamDTO)) {
+		
+			if ((cthd.getMauSanPhamDTO().getMaSanPham().equals(mauSanPhamDTO.getMaSanPham()))
+					&& (cthd.getMauSanPhamDTO().getMaMau()==mauSanPhamDTO.getMaMau())) {
 				cthd.setSoLuong(soLuong);
-				System.out.println("soLuong "+soLuong);
+				
 			}
 
 		});

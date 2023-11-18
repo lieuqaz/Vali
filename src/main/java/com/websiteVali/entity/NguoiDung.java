@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.BatchSize;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -49,13 +51,14 @@ public class NguoiDung {
 
 	@Column(name = "trang_thai")
 	private boolean trangThai;
-
 	@OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
+	@BatchSize(size = 10)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private List<HoaDon> hoaDons;
 
 	@OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
+	@BatchSize(size = 10)
 	@EqualsAndHashCode.Exclude
 	@ToString.Exclude
 	private List<BinhLuan> binhLuans;
